@@ -1,0 +1,99 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #111827;
+  background-color: #f3f1ed;
+  --page-bg: #f3f1ed;
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --card-border: rgba(255, 255, 255, 0.85);
+  --card-shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.06);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* 重置 body 样式以适应全屏页面 */
+body {
+  display: block;
+  padding: 0;
+}
+
+.el-avatar,
+.el-avatar:focus,
+.el-avatar:focus-visible,
+.el-avatar__inner,
+.el-avatar__inner:focus,
+.el-avatar__inner:focus-visible,
+.avatar-wrapper,
+.user-profile,
+.user-profile:focus,
+.user-profile:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* 通用柔和背景 + 粒子动效容器（非登录类页面使用） */
+.soft-page-bg {
+  position: relative;
+  min-height: 100vh;
+  background-color: var(--page-bg);
+  overflow-x: hidden; /* 防止水平溢出 */
+  overflow-y: visible; /* 确保 position: sticky 能够正常工作 */
+}
+
+.soft-page-bg::before {
+  content: "";
+  position: fixed;
+  inset: -80px;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(180, 172, 160, 0.14) 0, transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(200, 192, 180, 0.12) 0, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(180, 172, 160, 0.14) 0, transparent 55%);
+  opacity: 0.45;
+  pointer-events: none;
+  animation: soft-particles 40s linear infinite;
+  z-index: -1;
+}
+
+@keyframes soft-particles {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-160px, -120px, 0);
+  }
+}
+
+/* 全局弹窗样式优化：防止被固定导航栏 (z-index: 1100) 和 工具栏 (z-index: 1050) 遮挡 */
+
+/* 1. SweetAlert2 弹窗全局调整 */
+.swal2-container {
+  z-index: 5000 !important; /* 绝对置顶 */
+}
+
+/* Toast 模式且在顶部时的位置调整 */
+.swal2-container.swal2-top,
+.swal2-container.swal2-top-start,
+.swal2-container.swal2-top-end,
+.swal2-container.swal2-center {
+  margin-top: 90px !important; /* 向下偏移 90px，避开 80px 的导航栏 */
+}
+
+/* 2. Element Plus ElMessage 全局调整 */
+.el-message {
+  z-index: 6000 !important; /* 绝对置顶 */
+  margin-top: 80px !important; /* 在导航栏下方开始堆叠 */
+}
+
+/* 3. Element Plus ElMessageBox/ElDialog 全局调整 */
+.el-overlay {
+  z-index: 4000 !important;
+}
